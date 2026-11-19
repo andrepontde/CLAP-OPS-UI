@@ -1,24 +1,24 @@
-import { apiRequest } from '../../lib/api'
 import { useMemo } from 'react'
+import { apiRequest } from '../../lib/api'
 import { useAuth } from '../../lib/useAuth'
 import type { VehicleListResponse } from './vehicle.types'
 
 export function useVehicleApi() {
-  const { accessToken } = useAuth()
-
-  if (!accessToken) {
-    throw new Error('A vehicle request requires authentication')
-  }
+  const { accessToken, selectedFleetId } = useAuth()
 
   return useMemo(
     () => ({
-      list: () =>
-        apiRequest<VehicleListResponse>('/vehicles', {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        }),
+      list: async () => {
+        if (!accessToken || !selectedFleetId) {
+          throw new Error('A vehicle request requires a selected fleet')
+        }
+
+        return apiRequest<VehicleListResponse>('/vehicles', {
+          accessToken,
+          fleetId: selectedFleetId,
+        })
+      },
     }),
-    [accessToken],
+    [accessToken, selectedFleetId],
   )
 }

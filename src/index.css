@@ -121,6 +121,28 @@ input {
   background: #1f2937;
 }
 
+.fleet-selector {
+  display: grid;
+  gap: 6px;
+  color: #d1d5db;
+  font-size: 13px;
+}
+
+.fleet-selector select {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #4b5563;
+  border-radius: 6px;
+  color: #ffffff;
+  background: #1f2937;
+}
+
+.admin-badge {
+  margin: 0;
+  color: #93c5fd;
+  font-size: 13px;
+}
+
 .logout-button {
   margin-top: auto;
   padding: 10px 12px;

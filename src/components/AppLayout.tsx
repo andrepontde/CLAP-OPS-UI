@@ -2,7 +2,7 @@ import { NavLink, Outlet, useNavigate } from 'react-router-dom'
 import { useAuth } from '../lib/useAuth'
 
 export function AppLayout() {
-  const { logout } = useAuth()
+  const { admin, logout, selectedFleetId, selectFleet } = useAuth()
   const navigate = useNavigate()
 
   async function handleLogout() {
@@ -21,6 +21,24 @@ export function AppLayout() {
           <NavLink to="/dashboard">Dashboard</NavLink>
           <NavLink to="/vehicles">Vehicles</NavLink>
         </nav>
+
+        {admin && admin.fleets.length > 0 && (
+          <label className="fleet-selector">
+            <span>Current fleet</span>
+            <select
+              value={selectedFleetId ?? ''}
+              onChange={(event) => selectFleet(event.target.value)}
+            >
+              {admin.fleets.map((fleet) => (
+                <option key={fleet.id} value={fleet.id}>
+                  {fleet.name}
+                </option>
+              ))}
+            </select>
+          </label>
+        )}
+
+        {admin?.is_superadmin && <p className="admin-badge">Superadmin</p>}
 
         <button className="logout-button" type="button" onClick={handleLogout}>
           Sign out

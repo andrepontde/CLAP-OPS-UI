@@ -1,15 +1,21 @@
 import { useEffect, useState } from 'react'
 import { ApiError } from '../../lib/api'
+import { useAuth } from '../../lib/useAuth'
 import { useVehicleApi } from './vehicle.api'
 import type { Vehicle } from './vehicle.types'
 
 export function VehicleListPage() {
+  const { selectedFleetId } = useAuth()
   const vehicleApi = useVehicleApi()
   const [vehicles, setVehicles] = useState<Vehicle[]>([])
   const [error, setError] = useState('')
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
+    if (!selectedFleetId) {
+      return
+    }
+
     let isMounted = true
 
     vehicleApi.list()
@@ -36,7 +42,23 @@ export function VehicleListPage() {
     return () => {
       isMounted = false
     }
-  }, [vehicleApi])
+  }, [selectedFleetId, vehicleApi])
+
+  if (!selectedFleetId) {
+    return (
+      <section>
+        <header className="page-header">
+          <div>
+            <p className="eyebrow">Fleet</p>
+            <h1>Vehicles</h1>
+          </div>
+        </header>
+        <div className="empty-state">
+          You do not have access to a fleet yet.
+        </div>
+      </section>
+    )
+  }
 
   return (
     <section>

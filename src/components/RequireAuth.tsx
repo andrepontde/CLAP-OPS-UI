@@ -2,8 +2,12 @@ import { Navigate, Outlet, useLocation } from 'react-router-dom'
 import { useAuth } from '../lib/useAuth'
 
 export function RequireAuth() {
-  const { accessToken } = useAuth()
+  const { accessToken, isLoading } = useAuth()
   const location = useLocation()
+
+  if (isLoading) {
+    return <p>Loading session...</p>
+  }
 
   if (!accessToken) {
     return (

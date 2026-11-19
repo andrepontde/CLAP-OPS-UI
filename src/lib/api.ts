@@ -1,5 +1,10 @@
 const API_BASE_URL = '/api/v1'
 
+export interface ApiRequestOptions extends RequestInit {
+  accessToken?: string
+  fleetId?: string
+}
+
 export class ApiError extends Error {
   readonly status: number
 
@@ -14,12 +19,15 @@ export class ApiError extends Error {
 
 export async function apiRequest<T>(
   path: string,
-  options: RequestInit = {},
+  options: ApiRequestOptions = {},
 ): Promise<T> {
+  const { accessToken, fleetId, ...requestOptions } = options
   const response = await fetch(`${API_BASE_URL}${path}`, {
-    ...options,
+    ...requestOptions,
     headers: {
       'Content-Type': 'application/json',
+      ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}),
+      ...(fleetId ? { 'X-Fleet-ID': fleetId } : {}),
       ...options.headers,
     },
   })
