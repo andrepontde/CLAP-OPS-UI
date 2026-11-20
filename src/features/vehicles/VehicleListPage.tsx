@@ -1,12 +1,16 @@
 import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
+import { PermissionGate } from '../../components/PermissionGate'
 import { ApiError } from '../../lib/api'
+import { hasFleetRole } from '../../lib/permissions'
 import { useAuth } from '../../lib/useAuth'
 import { useVehicleApi } from './vehicle.api'
 import type { Vehicle } from './vehicle.types'
 
 export function VehicleListPage() {
-  const { selectedFleetId } = useAuth()
+  const { admin, selectedFleetId } = useAuth()
   const vehicleApi = useVehicleApi()
+  const canCreateVehicle = hasFleetRole(admin, selectedFleetId, 'MANAGER')
   const [vehicles, setVehicles] = useState<Vehicle[]>([])
   const [error, setError] = useState('')
   const [isLoading, setIsLoading] = useState(true)
@@ -49,8 +53,11 @@ export function VehicleListPage() {
       <section>
         <header className="page-header">
           <div>
-            <p className="eyebrow">Fleet</p>
+            <p className="eyebrow">Fleet management</p>
             <h1>Vehicles</h1>
+            <p className="page-description">
+              Manage the vehicles assigned to your selected fleet.
+            </p>
           </div>
         </header>
         <div className="empty-state">
@@ -64,9 +71,18 @@ export function VehicleListPage() {
     <section>
       <header className="page-header">
         <div>
-          <p className="eyebrow">Fleet</p>
+          <p className="eyebrow">Fleet management</p>
           <h1>Vehicles</h1>
+          <p className="page-description">
+            Manage the vehicles assigned to your selected fleet.
+          </p>
         </div>
+        <PermissionGate allowed={canCreateVehicle}>
+          <Link className="glass-button" to="/vehicles/new">
+            <span aria-hidden="true">+</span>
+            Add vehicle
+          </Link>
+        </PermissionGate>
       </header>
 
       {isLoading && <p>Loading vehicles...</p>}
@@ -86,6 +102,7 @@ export function VehicleListPage() {
                 <th>License plate</th>
                 <th>Status</th>
                 <th>Odometer</th>
+                <th><span className="sr-only">Actions</span></th>
               </tr>
             </thead>
             <tbody>
@@ -100,6 +117,28 @@ export function VehicleListPage() {
                     </span>
                   </td>
                   <td>{vehicle.current_odometer.toLocaleString()}</td>
+                  <td>
+                    <Link
+                      className="table-action"
+                      to={`/vehicles/${vehicle.id}`}
+                    >
+                      View details
+                    </Link>
+                    <PermissionGate
+                      allowed={hasFleetRole(
+                        admin,
+                        selectedFleetId,
+                        'MANAGER',
+                      )}
+                    >
+                      <Link
+                        className="table-action table-action-secondary"
+                        to={`/vehicles/${vehicle.id}/edit`}
+                      >
+                        Edit
+                      </Link>
+                    </PermissionGate>
+                  </td>
                 </tr>
               ))}
             </tbody>
