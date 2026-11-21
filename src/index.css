@@ -424,6 +424,25 @@ tbody tr:last-child td {
   gap: 12px;
 }
 
+.danger-button {
+  padding: 11px 16px;
+  border: 1px solid #7f1d1d;
+  border-radius: 12px;
+  color: #fecaca;
+  cursor: pointer;
+  background: rgba(127, 29, 29, 0.32);
+}
+
+.danger-button:hover {
+  border-color: #ef4444;
+  background: rgba(127, 29, 29, 0.48);
+}
+
+.danger-button:disabled {
+  cursor: wait;
+  opacity: 0.65;
+}
+
 .detail-header h1 {
   margin: 0;
   color: #f9fafb;
@@ -460,6 +479,10 @@ tbody tr:last-child td {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 16px;
+}
+
+.operator-detail-grid {
+  grid-template-columns: minmax(0, 1fr);
 }
 
 .detail-card {
