@@ -40,6 +40,7 @@ export function AppLayout() {
         )}
 
         {admin?.is_superadmin && <p className="admin-badge">Superadmin</p>}
+        {admin && <p className="admin-name">{admin.name}</p>}
 
         <button className="logout-button" type="button" onClick={handleLogout}>
           Sign out

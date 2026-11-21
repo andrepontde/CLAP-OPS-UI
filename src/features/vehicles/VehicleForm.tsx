@@ -1,6 +1,10 @@
 import { useState, type FormEvent } from 'react'
 import { Link } from 'react-router-dom'
-import type { VehicleCreateInput, VehicleStatus } from './vehicle.types'
+import type {
+  VehicleCreateInput,
+  VehiclePropulsionType,
+  VehicleStatus,
+} from './vehicle.types'
 
 interface VehicleFormProps {
   initialValues: VehicleCreateInput
@@ -70,14 +74,36 @@ export function VehicleForm({
             />
           </label>
           <label>
+            Propulsion type
+            <select
+              value={form.propulsion_type}
+              onChange={(event) => {
+                const propulsionType =
+                  event.target.value as VehiclePropulsionType
+                setForm((current) => ({
+                  ...current,
+                  propulsion_type: propulsionType,
+                  fuel_type:
+                    propulsionType === 'ELECTRIC' ? null : current.fuel_type,
+                }))
+              }}
+            >
+              <option value="FUEL">Fuel</option>
+              <option value="ELECTRIC">Electric</option>
+              <option value="HYBRID">Hybrid</option>
+            </select>
+          </label>
+          {form.propulsion_type !== 'ELECTRIC' && (
+          <label>
             Fuel type
             <input
-              value={form.fuel_type}
+              value={form.fuel_type ?? ''}
               maxLength={50}
               onChange={(event) => updateField('fuel_type', event.target.value)}
               required
             />
           </label>
+          )}
           <label>
             Make
             <input

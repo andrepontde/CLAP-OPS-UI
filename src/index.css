@@ -151,6 +151,12 @@ select {
   font-size: 13px;
 }
 
+.admin-name {
+  margin: 0;
+  color: #625c70;
+  font-size: 13px;
+}
+
 .logout-button {
   margin-top: auto;
   padding: 10px 12px;

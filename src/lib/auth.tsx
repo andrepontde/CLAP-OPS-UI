@@ -5,6 +5,7 @@ import type { CurrentAdmin, FleetMembership } from './auth-context'
 
 const TOKEN_KEY = 'clap_ops_access_token'
 const FLEET_KEY = 'clap_ops_selected_fleet'
+const ADMIN_KEY = 'clap_ops_current_admin'
 
 interface LoginResponse {
   access_token: string
@@ -49,7 +50,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [accessToken, setAccessToken] = useState<string | null>(
     () => sessionStorage.getItem(TOKEN_KEY),
   )
-  const [admin, setAdmin] = useState<CurrentAdmin | null>(null)
+  const [admin, setAdmin] = useState<CurrentAdmin | null>(() => {
+    const storedAdmin = sessionStorage.getItem(ADMIN_KEY)
+    if (!storedAdmin) {
+      return null
+    }
+    try {
+      return JSON.parse(storedAdmin) as CurrentAdmin
+    } catch {
+      sessionStorage.removeItem(ADMIN_KEY)
+      return null
+    }
+  })
   const [selectedFleetId, setSelectedFleetId] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(() => Boolean(
     sessionStorage.getItem(TOKEN_KEY),
@@ -63,6 +75,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     loadCurrentAdmin(storedToken)
       .then((currentAdmin) => {
+        sessionStorage.setItem(ADMIN_KEY, JSON.stringify(currentAdmin))
         setAdmin(currentAdmin)
         const fleetId = getStoredFleetId(currentAdmin)
         setSelectedFleetId(fleetId)
@@ -73,6 +86,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       .catch(() => {
         sessionStorage.removeItem(TOKEN_KEY)
         sessionStorage.removeItem(FLEET_KEY)
+        sessionStorage.removeItem(ADMIN_KEY)
         setAccessToken(null)
       })
       .finally(() => {
@@ -89,6 +103,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const fleetId = getStoredFleetId(currentAdmin)
 
     sessionStorage.setItem(TOKEN_KEY, response.access_token)
+    sessionStorage.setItem(ADMIN_KEY, JSON.stringify(currentAdmin))
     if (fleetId) {
       sessionStorage.setItem(FLEET_KEY, fleetId)
     }
@@ -107,6 +122,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       } finally {
         sessionStorage.removeItem(TOKEN_KEY)
         sessionStorage.removeItem(FLEET_KEY)
+        sessionStorage.removeItem(ADMIN_KEY)
         setAccessToken(null)
         setAdmin(null)
         setSelectedFleetId(null)
@@ -116,6 +132,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     sessionStorage.removeItem(TOKEN_KEY)
     sessionStorage.removeItem(FLEET_KEY)
+    sessionStorage.removeItem(ADMIN_KEY)
     setAdmin(null)
     setSelectedFleetId(null)
   }

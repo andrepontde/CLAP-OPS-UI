@@ -208,9 +208,22 @@ export function VehicleDetailPage() {
               onSave={saveField}
             />
             <EditableDetailItem
+              label="Propulsion type"
+              field="propulsion_type"
+              value={vehicle.propulsion_type}
+              displayValue={vehicle.propulsion_type}
+              inputType="propulsion"
+              editingField={editingField}
+              isSaving={isSaving}
+              canEdit={canEdit}
+              onEdit={setEditingField}
+              onSave={saveField}
+            />
+            <EditableDetailItem
               label="Fuel type"
               field="fuel_type"
               value={vehicle.fuel_type}
+              displayValue={vehicle.fuel_type ?? 'Not applicable'}
               editingField={editingField}
               isSaving={isSaving}
               canEdit={canEdit}
@@ -321,7 +334,7 @@ interface EditableDetailItemProps {
   field: keyof VehicleUpdateInput
   value: string | number | null
   displayValue?: string
-  inputType?: 'text' | 'number' | 'date' | 'status'
+  inputType?: 'text' | 'number' | 'date' | 'status' | 'propulsion'
   canEdit: boolean
   editingField: keyof VehicleUpdateInput | null
   isSaving: boolean
@@ -370,6 +383,12 @@ function EditableDetailItem({
                 <option value="ACTIVE">Active</option>
                 <option value="IN_MAINTENANCE">In maintenance</option>
                 <option value="DECOMMISSIONED">Decommissioned</option>
+              </select>
+            ) : inputType === 'propulsion' ? (
+              <select name="value" defaultValue={String(inputValue)} autoFocus>
+                <option value="FUEL">Fuel</option>
+                <option value="ELECTRIC">Electric</option>
+                <option value="HYBRID">Hybrid</option>
               </select>
             ) : (
               <input
