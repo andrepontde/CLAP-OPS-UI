@@ -36,7 +36,9 @@ export async function apiRequest<T>(
     let message = `Request failed (${response.status})`
 
     try {
-      const body = await response.json() as { detail?: unknown }
+      const body = await response.json() as {
+        detail?: unknown
+      }
       if (typeof body.detail === 'string') {
         message = body.detail
       }

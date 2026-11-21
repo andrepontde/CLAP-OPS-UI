@@ -3,6 +3,10 @@ import { AppLayout } from './components/AppLayout'
 import { RequireAuth } from './components/RequireAuth'
 import { LoginPage } from './features/auth/LoginPage'
 import { DashboardPage } from './features/dashboard/DashboardPage'
+import { OperatorCreatePage } from './features/operators/OperatorCreatePage'
+import { OperatorDetailPage } from './features/operators/OperatorDetailPage'
+import { OperatorEditPage } from './features/operators/OperatorEditPage'
+import { OperatorListPage } from './features/operators/OperatorListPage'
 import { VehicleCreatePage } from './features/vehicles/VehicleCreatePage'
 import { VehicleDetailPage } from './features/vehicles/VehicleDetailPage'
 import { VehicleEditPage } from './features/vehicles/VehicleEditPage'
@@ -17,6 +21,12 @@ export default function App() {
         <Route element={<RequireAuth />}>
           <Route element={<AppLayout />}>
             <Route path="/dashboard" element={<DashboardPage />} />
+            <Route path="/operators">
+              <Route index element={<OperatorListPage />} />
+              <Route path="new" element={<OperatorCreatePage />} />
+              <Route path=":operatorId/edit" element={<OperatorEditPage />} />
+              <Route path=":operatorId" element={<OperatorDetailPage />} />
+            </Route>
             <Route path="/vehicles">
               <Route index element={<VehicleListPage />} />
               <Route path="new" element={<VehicleCreatePage />} />

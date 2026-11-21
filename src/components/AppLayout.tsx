@@ -19,6 +19,7 @@ export function AppLayout() {
 
         <nav aria-label="Primary navigation">
           <NavLink to="/dashboard">Dashboard</NavLink>
+          <NavLink to="/operators">Operators</NavLink>
           <NavLink to="/vehicles">Vehicles</NavLink>
         </nav>
 
