@@ -1,0 +1,5 @@
+services:
+  ui:
+    container_name: CLAP-OPS-UI
+    build:
+      context: .
