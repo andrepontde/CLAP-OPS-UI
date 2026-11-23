@@ -3,3 +3,6 @@ services:
     container_name: CLAP-OPS-UI
     build:
       context: .
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:4173:80"
