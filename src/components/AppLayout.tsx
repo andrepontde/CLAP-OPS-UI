@@ -21,6 +21,7 @@ export function AppLayout() {
           <NavLink to="/dashboard">Dashboard</NavLink>
           <NavLink to="/operators">Operators</NavLink>
           <NavLink to="/vehicles">Vehicles</NavLink>
+          <NavLink to="/fuel-energy">Fuel &amp; energy</NavLink>
         </nav>
 
         {admin && admin.fleets.length > 0 && (
