@@ -3,12 +3,15 @@ export type VehicleStatus =
   | 'IN_MAINTENANCE'
   | 'DECOMMISSIONED'
 
+export type VehiclePropulsionType = 'FUEL' | 'ELECTRIC' | 'HYBRID'
+
 export interface Vehicle {
   id: string
   name: string
   status: VehicleStatus
   type: string
-  fuel_type: string
+  propulsion_type: VehiclePropulsionType
+  fuel_type: string | null
   vin_sn: string
   license_plate: string
   year: number
@@ -30,7 +33,8 @@ export interface VehicleCreateInput {
   name: string
   status: VehicleStatus
   type: string
-  fuel_type: string
+  propulsion_type: VehiclePropulsionType
+  fuel_type: string | null
   vin_sn: string
   license_plate: string
   year: number

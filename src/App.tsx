@@ -11,6 +11,10 @@ import { VehicleCreatePage } from './features/vehicles/VehicleCreatePage'
 import { VehicleDetailPage } from './features/vehicles/VehicleDetailPage'
 import { VehicleEditPage } from './features/vehicles/VehicleEditPage'
 import { VehicleListPage } from './features/vehicles/VehicleListPage'
+import { FuelEnergyListPage } from './features/fuel-energy/FuelEnergyListPage'
+import { FuelEnergyCreatePage } from './features/fuel-energy/FuelEnergyCreatePage'
+import { FuelEnergyDetailPage } from './features/fuel-energy/FuelEnergyDetailPage'
+import { FuelEnergyEditPage } from './features/fuel-energy/FuelEnergyEditPage'
 
 export default function App() {
   return (
@@ -32,6 +36,12 @@ export default function App() {
               <Route path="new" element={<VehicleCreatePage />} />
               <Route path=":vehicleId/edit" element={<VehicleEditPage />} />
               <Route path=":vehicleId" element={<VehicleDetailPage />} />
+            </Route>
+            <Route path="/fuel-energy">
+              <Route index element={<FuelEnergyListPage />} />
+              <Route path=":kind/new" element={<FuelEnergyCreatePage />} />
+              <Route path=":kind/:entryId/edit" element={<FuelEnergyEditPage />} />
+              <Route path=":kind/:entryId" element={<FuelEnergyDetailPage />} />
             </Route>
           </Route>
         </Route>

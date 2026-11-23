@@ -21,6 +21,7 @@ export function AppLayout() {
           <NavLink to="/dashboard">Dashboard</NavLink>
           <NavLink to="/operators">Operators</NavLink>
           <NavLink to="/vehicles">Vehicles</NavLink>
+          <NavLink to="/fuel-energy">Fuel &amp; energy</NavLink>
         </nav>
 
         {admin && admin.fleets.length > 0 && (
@@ -40,6 +41,7 @@ export function AppLayout() {
         )}
 
         {admin?.is_superadmin && <p className="admin-badge">Superadmin</p>}
+        {admin && <p className="admin-name">{admin.name}</p>}
 
         <button className="logout-button" type="button" onClick={handleLogout}>
           Sign out

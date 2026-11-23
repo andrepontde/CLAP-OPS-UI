@@ -10,6 +10,7 @@ export interface FleetMembership {
 
 export interface CurrentAdmin {
   id: string
+  name: string
   email: string
   is_superadmin: boolean
   fleets: FleetMembership[]

@@ -12,6 +12,7 @@ function toFormValues(vehicle: Vehicle): VehicleCreateInput {
     name: vehicle.name,
     status: vehicle.status,
     type: vehicle.type,
+    propulsion_type: vehicle.propulsion_type,
     fuel_type: vehicle.fuel_type,
     vin_sn: vehicle.vin_sn,
     license_plate: vehicle.license_plate,
